@@ -54,35 +54,35 @@
 </head>
 <body>
 	<h1>Q&A Pairs</h1>
-	<select id="Question">
-		<option value="">Select a Question</option>
+	<select id="question">
+		<option value="">Select a question</option>
 	</select>
 	<div id="answer"></div>
 	<script>
-		var select = document.getElementById("Question");
+		var select = document.getElementById("question");
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				var data = this.responseText.split(/\r?\n/);
-				
+				var questions = {};
 				for (var i = 0; i < data.length; i++) {
 					var row = data[i].split(",");
-					var Question = row[0];
+					var question = row[0];
 					var answer = row[1];
-					var qaPair = {Question: Question, Answer: Answer};
-					select.options[select.options.length] = new Option(Question, JSON.stringify(qaPair));
+					questions[question] = answer;
+					select.options[select.options.length] = new Option(question, question);
 				}
 				select.addEventListener("change", function() {
-					var qaPair = JSON.parse(select.value);
-					if (qaPair.Question != "") {
-						document.getElementById("Answer").innerHTML = qaPair.Answer;
+					var question = select.value;
+					if (question != "") {
+						document.getElementById("answer").innerHTML = questions[question];
 					} else {
-						document.getElementById("Answer").innerHTML = "";
+						document.getElementById("answer").innerHTML = "";
 					}
 				});
 			}
 		};
-		xhr.open("GET", "questionANDans.csv", true);
+		xhr.open("GET", "q_and_a.csv", true);
 		xhr.send();
 	</script>
 </body>
